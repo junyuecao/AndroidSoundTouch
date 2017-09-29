@@ -37,6 +37,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-//    compile project(path: ':soundtouch')
-    compile 'io.github.junyuecao:soundtouch:1.0.0'
+    compile project(path: ':soundtouch')
 }
