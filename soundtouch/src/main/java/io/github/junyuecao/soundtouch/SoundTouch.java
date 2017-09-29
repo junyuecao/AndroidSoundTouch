@@ -65,8 +65,8 @@ public class SoundTouch {
      * output buffer and removes them from the sample buffer. If there are less than
      * 'numsample' samples in the buffer, returns all that available.
      *
-     * @param outputSamples  接收采样的数组
-     * @param maxSampleCount 最大接收数量, 字节数
+     * @param outputSamples  Output sample array
+     * @param maxSampleCount max sample count
      * @return Number of samples returned.
      */
     public int receiveSamples(short[] outputSamples, int maxSampleCount) {
@@ -75,6 +75,30 @@ public class SoundTouch {
         }
 
         return receiveSamples(handle, outputSamples, maxSampleCount);
+    }
+
+    /**
+     * Output samples from beginning of the sample buffer. Copies requested samples to
+     * output buffer and removes them from the sample buffer. If there are less than
+     * 'numsample' samples in the buffer, returns all that available.
+     *
+     * @param outputArray  Output byte array
+     * @param maxOutputSize max output byte count
+     * @return Number of bytes returned.
+     */
+    public int receiveSamples(byte[] outputArray, int maxOutputSize) {
+        if (handle == 0) {
+            return 0;
+        }
+
+        short[] outputSamples = new short[maxOutputSize / 2];
+        int samples = receiveSamples(handle, outputSamples, maxOutputSize / 2);
+
+        ByteBuffer byteBuffer = ByteBuffer.allocate(maxOutputSize);
+        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        byteBuffer.asShortBuffer().put(outputSamples, 0, samples);
+        byteBuffer.get(outputArray);
+        return samples * 2;
     }
 
     /**

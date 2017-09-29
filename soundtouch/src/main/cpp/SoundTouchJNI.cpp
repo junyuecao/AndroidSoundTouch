@@ -273,7 +273,7 @@ double getInputOutputSampleRatio(JNIEnv *env, jobject thiz, jlong handle) {
 /// stream. This function may introduce additional blank samples in the end
 /// of the sound stream, and thus it's not recommended to call this function
 /// in the middle of a sound stream.
-void flush(JNIEnv *env, jobject thiz, jlong handle) {
+void flushSoundTouch(JNIEnv *env, jobject thiz, jlong handle) {
     // 获取SoundTouch实例
     SoundTouch *ptr = (SoundTouch *) handle;
     if (ptr == NULL) {
@@ -366,13 +366,12 @@ static const JNINativeMethod gMethods[] = {
         {"setChannels",               "(JI)V",                (void *) setChannels},
         {"setSampleRate",             "(JI)V",                (void *) setSampleRate},
         {"getInputOutputSampleRatio", "(J)D",                 (void *) getInputOutputSampleRatio},
-        {"flush",                     "(J)V",                 (void *) flush},
-        {"flush",                     "(J)V",                 (void *) flush},
+        {"flush",                     "(J)V",                 (void *) flushSoundTouch},
         {"numSamples",                "(J)I",                 (void *) numSamples},
         {"numUnprocessedSamples",     "(J)I",                 (void *) numUnprocessedSamples},
         {"isEmpty",                   "(J)I",                 (void *) isEmpty},
         {"clear",                     "(J)V",                 (void *) clear},
-        {"numChannels",               "(J)I",                 (void *) numChannels},
+        {"numChannels",               "(J)I",                 (void *) numChannels}
 };
 
 /*

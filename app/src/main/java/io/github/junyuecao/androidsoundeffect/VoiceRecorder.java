@@ -34,7 +34,7 @@ import android.support.annotation.RequiresApi;
 @RequiresApi(18)
 public class VoiceRecorder {
 
-//    private static final int[] SAMPLE_RATE_CANDIDATES = new int[]{44100};
+    public static final int SAMPLE_RATE = 44100;
 
     private static final int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
     private static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
@@ -127,12 +127,12 @@ public class VoiceRecorder {
      */
     private AudioRecord createAudioRecord() {
 //        for (int sampleRate : SAMPLE_RATE_CANDIDATES) {
-        final int sizeInBytes = AudioRecord.getMinBufferSize(44100, CHANNEL, ENCODING);
+        final int sizeInBytes = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL, ENCODING);
         if (sizeInBytes == AudioRecord.ERROR_BAD_VALUE) {
             return null;
         }
         final AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
-                44100, CHANNEL, ENCODING, sizeInBytes);
+                SAMPLE_RATE, CHANNEL, ENCODING, sizeInBytes);
         if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
             mBuffer = new byte[sizeInBytes];
             return audioRecord;

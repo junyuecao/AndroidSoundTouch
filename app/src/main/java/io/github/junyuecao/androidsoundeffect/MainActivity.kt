@@ -16,33 +16,39 @@ import java.nio.ByteOrder
 
 class MainActivity : AppCompatActivity(), VoiceRecorder.Callback {
     val TAG = "MainActivity"
+    private var mRecorder : VoiceRecorder? = null
+    private var mSoundTouch : SoundTouch? = null
+    private var mIsRecording = false
+    private var mTestWavOutput: FileOutputStream? = null
+    private val BUFFER_SIZE: Int = 4096
+    private var mTempBuffer : ByteArray = ByteArray(BUFFER_SIZE)
+
+    private var mPitch: Double = 1.0;
+    private var mRate: Double = 1.0;
+
     override fun onVoiceStart() {
         mSoundTouch = SoundTouch()
         mSoundTouch?.setChannels(1)
-        mSoundTouch?.setSampleRate(44100)
+        mSoundTouch?.setSampleRate(VoiceRecorder.SAMPLE_RATE)
         mTestWavOutput = getTestWavOutput()
         writeWavHeader(mTestWavOutput!!,
                 AudioFormat.CHANNEL_IN_MONO,
-                44100,
+                VoiceRecorder.SAMPLE_RATE,
                 AudioFormat.ENCODING_PCM_16BIT);
     }
 
     override fun onVoice(data: ByteArray?, size: Int) {
         Log.d(TAG, "onVoice: $data, Size: $size")
-//        mTestWavOutput?.write(data, 0, size)
         mSoundTouch?.setRate(mRate)
         mSoundTouch?.setPitch(mPitch)
         mSoundTouch?.putSamples(data, size)
-        var sampleSize = 0
+        var bufferSize = 0
         do {
-            sampleSize = mSoundTouch!!.receiveSamples(mTempBuffer, BUFFER_SIZE)
-            if (sampleSize > 0) {
-                val buffer = ByteBuffer.allocate(mTempBuffer.size * 2)
-                buffer.order(ByteOrder.LITTLE_ENDIAN)
-                buffer.asShortBuffer().put(mTempBuffer)
-                mTestWavOutput?.write(buffer.array(), 0, sampleSize * 2)
+            bufferSize = mSoundTouch!!.receiveSamples(mTempBuffer, BUFFER_SIZE)
+            if (bufferSize > 0) {
+                mTestWavOutput?.write(mTempBuffer, 0, bufferSize)
             }
-        } while (sampleSize != 0)
+        } while (bufferSize != 0)
 
     }
 
@@ -56,16 +62,6 @@ class MainActivity : AppCompatActivity(), VoiceRecorder.Callback {
         }
         updateWavHeader(getTempFile())
     }
-
-    private var mRecorder : VoiceRecorder? = null
-    private var mSoundTouch : SoundTouch? = null
-    private var mIsRecording = false
-    private var mTestWavOutput: FileOutputStream? = null
-    private val BUFFER_SIZE: Int = 2048
-    private var mTempBuffer : ShortArray = ShortArray(BUFFER_SIZE)
-
-    private var mPitch: Double = 1.0;
-    private var mRate: Double = 1.0;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +89,7 @@ class MainActivity : AppCompatActivity(), VoiceRecorder.Callback {
                 player.start()
             }
         }
-
+        pitchText.text = "Pitch: $mPitch"
         pitch.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(p0: SeekBar?) {
 
@@ -104,14 +100,16 @@ class MainActivity : AppCompatActivity(), VoiceRecorder.Callback {
             }
 
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                if (pitch.progress > 50) {
-                    mPitch = (3.0 / 50.0) * pitch.progress - 2;
+                if (pitch.progress > 500) {
+                    mPitch = (3.0 / 500.0) * pitch.progress - 2
                 } else{
-                    mPitch = 0.75 / 50 * pitch.progress+ 0.25;
+                    mPitch = 0.75 / 500 * pitch.progress+ 0.25
                 }
+                pitchText.text = "Pitch: $mPitch"
             }
 
         })
+        rateText.text = "Rate: $mRate"
         rate.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(p0: SeekBar?) {
 
@@ -122,11 +120,12 @@ class MainActivity : AppCompatActivity(), VoiceRecorder.Callback {
             }
 
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                if (pitch.progress > 50) {
-                    mRate = (3.0 / 50.0) * rate.progress - 2;
+                if (pitch.progress > 500) {
+                    mRate = (3.0 / 500.0) * rate.progress - 2
                 } else{
-                    mRate = 0.75 / 50 * rate.progress+ 0.25;
+                    mRate = 0.75 / 500 * rate.progress+ 0.25
                 }
+                rateText.text = "Rate: $mRate"
             }
         })
     }

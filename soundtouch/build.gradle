@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+version = "1.0.0"
 
 android {
     compileSdkVersion 26
@@ -14,9 +17,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         externalNativeBuild {
-            cmake {
-                cFlags "-fvisibility=hidden", "-fdata-sections", "-ffunction-sections"
-                cppFlags "-fexceptions"
+            ndkBuild {
+                targets "native-lib"
+                abiFilters 'arm64-v8a', "armeabi-v7a"//,
             }
         }
     }
@@ -29,18 +32,89 @@ android {
     }
 
     externalNativeBuild {
-        cmake {
-            path "CMakeLists.txt"
+        ndkBuild {
+            path 'src/main/cpp/Android.mk'
         }
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+}
+
+def siteUrl = 'https://github.com/junyuecao/AndroidSoundTouch'      // Home page
+def gitUrl = 'https://github.com/junyuecao/AndroidSoundTouch.git'   // Git repo
+
+group = "io.github.junyuecao" // Maven Group ID for the artifact
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                // Add your description here
+                name 'A SoundTouch java wrapper library for Android'
+                url siteUrl
+                // Set your license
+                licenses {
+                    license {
+                        name 'GNU Lesser General Public License v3.0'
+                        url 'https://www.gnu.org/licenses/lgpl-3.0.en.html'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'junyuecao'       //填写开发者基本信息
+                        name 'junyuecao'
+                        email 'junyuecao@gmail.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += configurations.compile
+    failOnError false
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = "maven" // The repo we upload to
+        name = "AndroidSoundTouch"  //Project name
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["LGPL-3.0"]
+        publish = true
+    }
 }
