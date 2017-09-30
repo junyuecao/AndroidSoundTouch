@@ -145,6 +145,8 @@ class MainActivity : AppCompatActivity(), VoiceRecorder.Callback {
 
     override fun onStop() {
         super.onStop()
+        mIsRecording = false
+        start.text = "Start"
         mRecorder?.stop()
     }
 
