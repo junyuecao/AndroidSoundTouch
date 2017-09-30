@@ -130,12 +130,6 @@ class MainActivity : AppCompatActivity(), VoiceRecorder.Callback {
         })
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mRecorder?.stop()
-    }
-
     private fun getTestWavOutput(): FileOutputStream? {
         val s = getTempFile()
 
@@ -147,6 +141,11 @@ class MainActivity : AppCompatActivity(), VoiceRecorder.Callback {
             return null
         }
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mRecorder?.stop()
     }
 
     private fun getTempFile() = File(getExternalFilesDir(null), "record_temp.wav")
