@@ -9,6 +9,22 @@ This repo is a java wrapper of [SoundTouch](https://www.surina.net/soundtouch/) 
  - Support short/byte array input/output
 
 ## Usage
+Gradle:
+```
+repositories {
+    jcenter()
+}
+
+// For gradle plugin 2.x
+dependencies {
+    compile 'io.github.junyuecao:soundtouch:1.0.1'
+}
+
+// For gradle plugin 3.x
+dependencies {
+    implementation 'io.github.junyuecao:soundtouch:1.0.1'
+}
+```
 The APIs are almost the same with the C/C++ version.
 - in kotlin
 ```
