@@ -35,28 +35,28 @@ dependencies {
 The APIs are almost the same with the C/C++ version.
 - in Java
 ```Java
-    public void onVoiceStart() {
-        mSoundTouch = new SoundTouch();
-        mSoundTouch.setChannels(1);
-        mSoundTouch.setSampleRate(VoiceRecorder.SAMPLE_RATE);
-    }
+public void onVoiceStart() {
+    mSoundTouch = new SoundTouch();
+    mSoundTouch.setChannels(1);
+    mSoundTouch.setSampleRate(VoiceRecorder.SAMPLE_RATE);
+}
 
-    public void onVoice(byte[] data, int size) {
-        mSoundTouch.setRate(mRate);
-        mSoundTouch.setPitch(mPitch);
-        mSoundTouch.putSamples(data, size);
-        int bufferSize = 0
-        do {
-            bufferSize = mSoundTouch.receiveSamples(mTempBuffer, BUFFER_SIZE);
-            if (bufferSize > 0) {
-                mTestWavOutput.write(mTempBuffer, 0, bufferSize);
-            }
-        } while (bufferSize != 0);
+public void onVoice(byte[] data, int size) {
+    mSoundTouch.setRate(mRate);
+    mSoundTouch.setPitch(mPitch);
+    mSoundTouch.putSamples(data, size);
+    int bufferSize = 0
+    do {
+        bufferSize = mSoundTouch.receiveSamples(mTempBuffer, BUFFER_SIZE);
+        if (bufferSize > 0) {
+            mTestWavOutput.write(mTempBuffer, 0, bufferSize);
+        }
+    } while (bufferSize != 0);
 
-    }
+}
 
-    public void onVoiceEnd() {
-        mSoundTouch.release();
-    }
+public void onVoiceEnd() {
+    mSoundTouch.release();
+}
 ```
 
