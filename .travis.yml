@@ -16,3 +16,5 @@ before_script:
   - export LOCAL_ANDROID_NDK_HOST_PLATFORM="linux-x86_64"
   - export PATH=$PATH:${ANDROID_NDK_HOME}
   - env
+script:
+  - ./gradlew build
