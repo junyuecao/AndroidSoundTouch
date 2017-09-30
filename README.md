@@ -8,6 +8,11 @@ This repo is a java wrapper of [SoundTouch](https://www.surina.net/soundtouch/) 
  - Support mono(1)/stereo(2) channels.
  - Support short/byte array input/output
 
+## Demo
+
+[Demo apk download link](https://github.com/junyuecao/AndroidSoundTouch/blob/master/app-release.apk?raw=true)
+
+
 ## Usage
 Gradle:
 ```groovy
