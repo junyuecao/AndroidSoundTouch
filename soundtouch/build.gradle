@@ -103,18 +103,20 @@ artifacts {
     archives javadocJar
     archives sourcesJar
 }
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
-    pkg {
-        repo = "maven" // The repo we upload to
-        name = "AndroidSoundTouch"  //Project name
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = ["LGPL-3.0"]
-        publish = true
+if (file('local.properties').exists()) {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    bintray {
+        user = properties.getProperty("bintray.user")
+        key = properties.getProperty("bintray.apikey")
+        configurations = ['archives']
+        pkg {
+            repo = "maven" // The repo we upload to
+            name = "AndroidSoundTouch"  //Project name
+            websiteUrl = siteUrl
+            vcsUrl = gitUrl
+            licenses = ["LGPL-3.0"]
+            publish = true
+        }
     }
 }
