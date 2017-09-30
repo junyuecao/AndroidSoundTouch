@@ -5,9 +5,7 @@ using namespace std;
 #include "SoundTouch.h"
 #include "common.h"
 
-#define BUFF_SIZE 4096
 using namespace soundtouch;
-static jmethodID outputMethod;
 
 /**
  * Get SoundTouch library version string
