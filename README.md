@@ -12,6 +12,7 @@ This repo is a java wrapper of [SoundTouch](https://www.surina.net/soundtouch/) 
 
 [Demo apk download link](https://github.com/junyuecao/AndroidSoundTouch/blob/master/app-release.apk?raw=true)
 
+Note: You should grant audio record permission manually before using.
 
 ## Usage
 Gradle:
