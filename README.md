@@ -10,7 +10,7 @@ This repo is a java wrapper of [SoundTouch](https://www.surina.net/soundtouch/) 
 
 ## Usage
 Gradle:
-```
+```groovy
 repositories {
     jcenter()
 }
@@ -28,7 +28,7 @@ dependencies {
 
 The APIs are almost the same with the C/C++ version.
 - in Java
-```
+```Java
     public void onVoiceStart() {
         mSoundTouch = new SoundTouch();
         mSoundTouch.setChannels(1);
