@@ -1,7 +1,7 @@
 # AndroidSoundTouch
 [![Build Status](https://travis-ci.org/junyuecao/AndroidSoundTouch.svg?branch=master)](https://travis-ci.org/junyuecao/AndroidSoundTouch)
 
-A SoundTouch java wrapper library for Android
+A handy SoundTouch java wrapper library for Android
 
 This repo is a java wrapper of [SoundTouch](https://www.surina.net/soundtouch/) for Android.
 
