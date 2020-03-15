@@ -78,11 +78,11 @@ receiveSamples(JNIEnv *env, jobject thiz, jlong handle, jshortArray outSamples, 
         return 0;
     }
 
-    SAMPLETYPE sampleBuffer[maxSamples];
+    SAMPLETYPE sampleBuffer[maxSamples*ptr->numChannels()];
 
     uint samples = ptr->receiveSamples(sampleBuffer, (uint) maxSamples);
 
-    env->SetShortArrayRegion(outSamples, 0, samples, sampleBuffer);
+    env->SetShortArrayRegion(outSamples, 0, samples*ptr->numChannels(), sampleBuffer);
 
     return samples;
 }
